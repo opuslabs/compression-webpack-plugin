@@ -8,7 +8,7 @@ var RawSource = require("webpack/lib/RawSource");
 
 function CompressionPlugin(options) {
 	options = options || {};
-	this.asset = options.asset || "{file}.gz";
+	this.asset = options.asset || "[file].gz";
 	this.algorithm = options.algorithm || "gzip";
 	if(typeof this.algorithm === "string") {
 		var zlib = require("zlib");
@@ -36,7 +36,7 @@ CompressionPlugin.prototype.apply = function(compiler) {
 				this.algorithm(content, function(err, result) {
 					if(err) return callback(err);
 					if(result.length / originalSize > this.minRatio) return callback();
-					var newFile = this.asset.replace(/\{file\}/g, file);
+					var newFile = this.asset.replace(/\[file\]/g, file);
 					assets[newFile] = new RawSource(result);
 					callback();
 				}.bind(this));
